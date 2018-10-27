@@ -2,7 +2,7 @@
   <div id="dashboard">
     <h1>That's the dashboard!</h1>
     <p>You should only get here if you're authenticated!</p>
-    <p>Your email is {{ email }}</p>
+    <p>Your email address is {{ email }}</p>
   </div>
 </template>
 
@@ -10,19 +10,25 @@
   import axios from 'axios';
 
   export default {
+      data() {
+        return {
+            email: ''
+        }
+      },
       created() {
-          axios.get('https://axios-96545.firebaseio.com//users.json')
-              .then(res =>
-                  console.log(res))
-                  const data = res.data
-                      const users = []
-                          for (let key in data) {
-                              const user = data[key]
-                              user.id = key
-                              users.push(user)
-                          }
-                          console.log(users)
-                              this.email = users[0].email
+          axios.get('/users.json')
+              .then(res => {
+                  console.log(res)
+                  const data = res.data;
+                  const users = [];
+                  for (let key in data) {
+                      const user = data[key];
+                      user.id = key
+                      users.push(user)
+                  }
+                  console.log(users)
+                  this.email = users[0].email
+              })
               .catch(error => console.log(error))
       }
   }
