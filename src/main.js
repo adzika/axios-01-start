@@ -6,7 +6,7 @@ import router from './router'
 import store from './store'
 
 axios.defaults.baseURL = 'https://axios-96545.firebaseio.com';
-axios.defaults.headers.common['Authorization'] = 'blob';
+//axios.defaults.headers.common['Authorization'] = 'blob';
 axios.defaults.headers.get['Accepts'] = 'application/json';
 
 const reqInterceptor = axios.interceptors.request.use(config => {

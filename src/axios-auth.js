@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://axios-96545.firebaseio.com'
+    baseURL: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
 });
 
-instance.defaults.headers.common['WHATEVER'] = 'whatever';
+//instance.defaults.headers.common['WHATEVER'] = 'whatever';
 
 export default instance
