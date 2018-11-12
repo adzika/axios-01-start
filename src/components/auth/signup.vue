@@ -66,7 +66,8 @@
                                     v-model="hobbyInput.value">
                             <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
                         </div>
-                        <p v-if="!$v.hobbyInputs.minLength">You have to have at least {{ $v.hobbyInputs.$params.minLength.min }} hobbies</p>
+                        <p v-if="!$v.hobbyInputs.minLength">You have to have at least {{
+                            $v.hobbyInputs.$params.minLength.min }} hobbies</p>
                         <p v-if="!$v.hobbyInputs.required">Please add hobbies.</p>
                     </div>
                 </div>
@@ -82,7 +83,7 @@
                     <label for="terms">Accept Terms of Use</label>
                 </div>
                 <div class="submit">
-                    <button type="submit">Submit</button>
+                    <button type="submit" :disabled="$v.$error">Submit</button>
                 </div>
             </form>
         </div>
@@ -90,6 +91,8 @@
 </template>
 
 <script>
+    import axios from 'axios'
+
     import {
         required,
         email,
@@ -110,13 +113,20 @@
                 confirmPassword: '',
                 country: 'usa',
                 hobbyInputs: [],
-                terms: undefined
+                terms: undefined,
             }
         },
         validations: {
             email: {
                 required,
-                email
+                email,
+                isUnique: val => {
+                    if (val === '') return true;
+                    return axios.get('/users.json?orderBy="email"&equalTo="' + val + '"')
+                        .then(res => {
+                            return Object.keys(res.data).length === 0
+                        })
+                }
             },
             age: {
                 required,
@@ -171,6 +181,9 @@
                 this.$store.dispatch('signup', formData)
 
             },
+        },
+        created() {
+            this.$v.$touch();
         }
     }
 </script>
@@ -226,8 +239,8 @@
     }
 
     .input.invalid input {
-        border: 1px solid red;
-        background: #ff8379;
+        border: 1px solid #ffead7;
+        background: #ff8987;
     }
 
     .hobbies button {
